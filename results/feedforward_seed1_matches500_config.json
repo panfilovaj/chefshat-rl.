@@ -1,0 +1,6 @@
+{
+  "agent": "feedforward",
+  "seed": 1,
+  "matches": 500,
+  "lr": 0.001
+}
