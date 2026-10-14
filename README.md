@@ -4,18 +4,14 @@
 
 Research question: Is a recurrent actor-critic policy better than a feedforward policy when given limited observations?
 
-This repository uses the [official Chef's Hat Gym environment](https://github.com/pablovin/ChefsHatGYM) and its local four-player room. The [documentation](https://chefshatgym.readthedocs.io/en/latest/) is older API descriptions so the downloaded V3 source was looked at during development. Source is a dependency, not a re-implementation.## Submission status
+This repository uses the [official Chef's Hat Gym environment](https://github.com/pablovin/ChefsHatGYM) and its local four-player room. The [documentation](https://chefshatgym.readthedocs.io/en/latest/) is older API descriptions so the downloaded V3 source was looked at during development. Source is a dependency, not a re-implementation.
 
 ## Submission status
-
-Included are the uploaded source and measured CSV results. Before you send:
-Copy the six 500-match checkpoints, six run configuration JSON files and 24 detailed evaluation CSVs from the original working project to the corresponding `results` folders. This bundle does not contain the trained weights, nor the detailed CSVs for the evaluation, since they were not provided for review.
 - Produce `results/environment_manifest.json` and record exact revision of official source used. The original run was based on a downloaded `main` zip. Its commit hasn't been found yet. Do not claim a precise commit until verified.
 - Record and add video viva URL below and confirm assessors have access to repository.
 Review and modify the code and the AI statement. Describe each of your submissions in your own words.
 
 **Video viva: pending – add here your accessible 3–5 min recording URL.**
-**Video viva: pending — add your accessible 3–5 minute recording URL here.**
 
 ## Design
 
@@ -23,7 +19,7 @@ Chef’s Hat is a turn-based card game. The objective is to be the first to fini
 
 The policy gets 12 own-hand counts (card ranks 1-12 divided by 17). The legal-action mask. Zero padded hand entries are ignored. The input with the 200-action catalog observed has 212 values. The neural policy does not know the board, public opponent-action events, opponent card counts and role information. The defaults of the random agent are kept by the exchange and special-action decisions.
 
-The legality mask is a network input and an output constraint. Illegal action logits are masked with infinity before sampling from a categorical distribution. Actions are using the official ordered catalog and return its integer indices. Both learned agents can choose pass when legal. Valid moves require the mask. Reveal information about the board thereby weakening the constraint.
+The legality mask is a network input and an output constraint. Illegal action logits are masked with negative infinity before sampling from a categorical distribution. Actions are using the official ordered catalog and return its integer indices. Both learned agents can choose pass when legal. Valid moves require the mask. Reveal information about the board thereby weakening the constraint.
 
 Both agents use an actor–critic update at the end of a match. The callback gives points so the reward is the difference from the previous total divided by 3. The intermediate rewards are zero. When gamma = 1 every decision in a game gets the terminal return. The actor uses return minus a detached value estimate as its upside. The critic predicts this return.
 
